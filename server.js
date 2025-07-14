@@ -1,6 +1,6 @@
-import WebSocket from 'ws';
+import { WebSocketServer } from 'ws';
 
-const wss = new WebSocket.Server({ port: 3000 });
+const wss = new WebSocketServer({ port: 3000 });
 const rooms = {};
 
 wss.on('connection', (ws) => {
@@ -49,7 +49,7 @@ function broadcastRoom(roomName, message, excludeWs = null) {
     const room = rooms[roomName];
     if (!room) return;
     room.forEach(ws => {
-        if (ws.readyState === WebSocket.OPEN && ws !== excludeWs) {
+        if (ws.readyState === ws.OPEN && ws !== excludeWs) {
             ws.send(JSON.stringify(message));
         }
     });
